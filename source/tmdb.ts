@@ -1,6 +1,6 @@
 import { MovieType, GenreType } from "@/types/types";
 
-const API_KEY:string = "YOUR_API_KEY";
+const API_KEY:string = "c5507bc4d27fea7fedf1490ee7868415";
 const BASE_URL: string = "https://api.themoviedb.org/3";
 
 export const getMovies = async():Promise<MovieType[]> => {

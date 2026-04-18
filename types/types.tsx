@@ -9,6 +9,7 @@ export type MovieType = {
   popularity: number;
   genre_ids: number[];
   runtime: number;
+  vote_count: number;
 };
 
 export type GenreType = {
