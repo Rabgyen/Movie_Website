@@ -12,8 +12,8 @@ type MovieCardProps = {
 export default function MovieCard({ movie }: MovieCardProps) {
   return (
     <Link href={`/movie/${movie.id}`}>
-    <div className=" bg-[#FDFAF6] rounded-lg shadow-2xl flex flex-col over dark:bg-[#202020] overflow-hidden"> 
-      <div>
+    <div className=" bg-[#FDFAF6] rounded-lg shadow-2xl flex flex-col over dark:bg-[#202020] overflow-hidden "> 
+      <div className="">
         <img
           src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
           alt="movie-img"

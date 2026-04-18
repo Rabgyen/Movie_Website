@@ -1,5 +1,4 @@
 import { MovieType, GenreType } from "@/types/types";
-import { useState } from "react";
 
 const API_KEY:string = "YOUR_API_KEY";
 const BASE_URL: string = "https://api.themoviedb.org/3";
@@ -31,3 +30,24 @@ export const getGenres = async (): Promise<GenreType[]> => {
   }
 };
 
+export const movieDetails = async (id: string | number): Promise<MovieType | null> => {
+  try {
+    const response = await fetch(`${BASE_URL}/movie/${id}?api_key=${API_KEY}&language=en-US`);
+    const data = await response.json();
+    return response.ok ? data : null;
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+}
+
+export const getPopularMovies = async():Promise<MovieType[] | []> => {
+  try{
+    const response = await fetch(`${BASE_URL}/movie/popular?api_key=${API_KEY}&language=en-US&page=1`);
+    const data = await response.json();
+    return data.results;
+  }catch(err) {
+    console.log(err) 
+    return [];
+  }
+}
