@@ -3,6 +3,7 @@
 import { FaStar } from "react-icons/fa";
 import { MdHowToVote } from "react-icons/md";
 import { MovieType } from "@/types/types";
+import Link from "next/link";
 
 type MovieCardProps = {
   movie: MovieType;
@@ -10,7 +11,8 @@ type MovieCardProps = {
 
 export default function MovieCard({ movie }: MovieCardProps) {
   return (
-    <div className=" bg-[#202020] rounded-lg shadow-2xl flex flex-col">
+    <Link href={`/movie/${movie.id}`}>
+    <div className=" bg-[#FDFAF6] rounded-lg shadow-2xl flex flex-col over dark:bg-[#202020] overflow-hidden"> 
       <div>
         <img
           src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
@@ -35,6 +37,6 @@ export default function MovieCard({ movie }: MovieCardProps) {
           </div>
         </span>
       </div>
-    </div>
+    </div></Link>
   );
 }

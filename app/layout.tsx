@@ -3,6 +3,8 @@ import { Geist, Geist_Mono, Roboto, Poppins, Inter } from "next/font/google";
 import "./globals.css";
 import NavBar from "@/components/navbar";
 import { cn } from "@/lib/utils";
+import { ThemeProvider } from "@/components/theme-provider";
+import { MoviePageProvider } from "@/context/moviesPageContext";
 
 const inter = Inter({subsets:['latin'],variable:'--font-sans'});
 
@@ -39,16 +41,19 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={cn("h-full", "antialiased", geistSans.variable, geistMono.variable, poppins.className, "font-sans", inter.variable)}
     >
       <body className="min-h-full flex p-2 gap-2">
-        <div>
-          <NavBar/>
-        </div>
-        <main className="main-scrollbar h-full w-full rounded-lg overflow-y-auto">
-          {children}
-        </main>
-        </body>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem >
+          <div>
+            <NavBar />
+          </div>
+          <main className="main-scrollbar h-full w-full rounded-lg overflow-y-auto">
+            <MoviePageProvider>{children}</MoviePageProvider>
+          </main>
+        </ThemeProvider>
+      </body>
     </html>
   );
 }
