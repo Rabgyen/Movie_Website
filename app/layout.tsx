@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Roboto, Poppins, Inter } from "next/font/google";
 import "./globals.css";
-import NavBar from "@/components/navbar";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/theme-provider";
 import { MoviePageProvider } from "@/context/moviesPageContext";
+import Sidebar from "@/components/sideBar";
 
 const inter = Inter({subsets:['latin'],variable:'--font-sans'});
 
@@ -47,7 +47,7 @@ export default function RootLayout({
       <body className="min-h-full flex p-2 gap-2">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem >
           <div>
-            <NavBar />
+            <Sidebar />
           </div>
           <main className="main-scrollbar h-full w-full rounded-lg overflow-y-auto">
             <MoviePageProvider>{children}</MoviePageProvider>

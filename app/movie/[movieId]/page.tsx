@@ -1,8 +1,9 @@
-import { movieDetails, getGenres } from "@/source/tmdb";
+import { movieDetails, getGenres, getMovieCast } from "@/source/tmdb";
 import { FaPlay, FaStar } from "react-icons/fa";
 import { TbChartBarPopular } from "react-icons/tb";
 import { HiCalendarDateRange } from "react-icons/hi2";
-import { release } from "os";
+import Cast from "@/components/cast";
+import { FaArrowRightLong } from "react-icons/fa6";
 
 export default async function MovieDetail({
   params,
@@ -11,6 +12,7 @@ export default async function MovieDetail({
 }) {
   const { movieId } = await params;
   const movieDetail = await movieDetails(movieId);
+  const casts = await getMovieCast(movieId);
 
   if (!movieDetail) {
     return (
@@ -19,17 +21,14 @@ export default async function MovieDetail({
       </div>
     );
   }
-
-  const getGenreMap = await getGenres();
-
   return (
-    <div className="relative dark:border-white h-full w-full flex p-2 sm:p-5 md-p-10 items-center overflow-hidden shadow-4xl">
+    <div className="relative dark:border-white h-full w-full flex p-2 sm:p-5 md:p-10 items-center overflow-auto shadow-4xl ">
       <img
         src={`https://image.tmdb.org/t/p/original${movieDetail.backdrop_path}`}
         alt={movieDetail.title}
         className="object-cover w-full h-full absolute top-0 left-0 opacity-100 -z-10"
       />
-      <div className="flex flex-col gap-4 text-white dark:text-white max-w-[600px]">
+      <div className="flex flex-col gap-4 text-white dark:text-white max-w-150">
         <h1 className="text-xl sm:text-2xl md:text-3xl  font-semibold drop-shadow-[4px_4px_10px_rgba(0,0,0,0.9)]">
           {movieDetail.title}
         </h1>
@@ -47,6 +46,17 @@ export default async function MovieDetail({
             </p>{" "}
           </button>
         </span>
+        <div className="flex gap-2 flex-wrap flex-col">
+          <h1 className="drop-shadow-[4px_4px_10px_rgba(0,0,0,0.9)]">Top Casts:</h1>
+          <div className="flex flex-wrap gap-2">
+            {casts.slice(0, 5).map((cast) => (
+            <Cast key={cast.id} cast={cast} />
+          ))}
+          </div>
+          <div className="group flex items-center gap-2 py-2 px-4 rounded-lg bg-white/10 backdrop-blur-md max-w-40 text-xs">
+            See More Cast <FaArrowRightLong  className="group-hover:translate-x-2 transition-all duration-300"/> 
+          </div>
+        </div>
         <span className="flex flex-col gap-4 drop-shadow-[4px_4px_10px_rgba(0,0,0,0.9)] mt-20 text-xs">
           <span
             className="flex gap-2"

@@ -1,4 +1,4 @@
-import { MovieType, GenreType } from "@/types/types";
+import { MovieType, GenreType, MovieCast } from "@/types/types";
 
 const API_KEY:string = "YOUR_API_KEY";
 const BASE_URL: string = "https://api.themoviedb.org/3";
@@ -55,5 +55,19 @@ export const getPopularMovies = async():Promise<MovieType[] | []> => {
   }catch(err) {
     console.log(err) 
     return [];
+
+}
+
+}
+
+export const getMovieCast = async(id: string|number): Promise<MovieCast[] | []> => {
+  try{
+    const response = await fetch(`${BASE_URL}/movie/${id}/credits?api_key=${API_KEY}&language=en-US`);
+    const data = await response.json();
+    return data.cast;
+  }catch(err){
+    console.log(err)
+    return [];
   }
+
 }

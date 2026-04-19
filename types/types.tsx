@@ -17,3 +17,9 @@ export type GenreType = {
   id: number;
   name: string;
 };
+
+export type MovieCast = {
+  id: number;
+  profile_path: string;
+  name: string;
+}

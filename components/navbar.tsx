@@ -1,93 +1,101 @@
 "use client";
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useState } from "react";
-import { MdHome } from "react-icons/md";
-import { FiCompass } from "react-icons/fi";
-import { IoFileTrayStacked } from "react-icons/io5";
-import { GrFavorite } from "react-icons/gr";
-import { FaBookmark } from "react-icons/fa6";
-import { HiOutlineMenuAlt3 } from "react-icons/hi";
-import {
-  TbLayoutSidebarLeftExpand,
-  TbLayoutSidebarLeftCollapse,
-} from "react-icons/tb";
-import ThemeToggle from "./toggleTheme";
+import { useState, useRef, useEffect } from "react";
+import { IoMdSearch } from "react-icons/io";
 
-const navItems = [
-  { label: "Home", href: "/", icon: MdHome },
-  { label: "Explore", href: "/explore", icon: FiCompass },
-  { label: "Genre", href: "/genre", icon: IoFileTrayStacked },
-  { label: "Favourites", href: "/favourites", icon: GrFavorite },
-  { label: "Watch Later", href: "/watch-later", icon: FaBookmark },
-];
+export default function NavBar(){
+   const [search, setSearch] = useState("");
+  const [isNotifyOpen, setIsNotifyOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
-export default function NavBar() {
-  const [isCollapsed, setIsCollapsed] = useState(true);
-  const pathname = usePathname();
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsNotifyOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const notifications = [
+    { id: 1, text: "New movie added: John Wick 4", time: "2m ago" },
+    { id: 2, text: "Your subscription was renewed", time: "1h ago" },
+    { id: 3, text: "Special offer: 50% off Premium", time: "3h ago" },
+  ];
 
   return (
-    <aside
-      className={`h-full text-slate-900 dark:text-slate-100 bg-linear-to-b from-slate-50/90 to-slate-100/70 dark:from-slate-900/80 dark:to-slate-950/70 border border-slate-300/70 dark:border-slate-700/60 backdrop-blur-xl shadow-[0_8px_24px_rgba(15,23,42,0.14)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.35)] rounded-lg p-3 transition-all duration-300 ${
-        isCollapsed ? "w-20" : "w-64"
-      }`}
-      aria-label="Sidebar"
-    >
-      <div className="mb-6 flex items-center justify-between">
-        <div className="flex items-center gap-2 text-violet-700 dark:text-violet-300 overflow-hidden">
-          <HiOutlineMenuAlt3 className="text-2xl shrink-0" />
-          {!isCollapsed && (
-            <p className="text-xl font-bold whitespace-nowrap">RSM Watch</p>
+    <nav className="relative flex items-center justify-between w-full px-4 py-3 bg-white border-b border-gray-200 dark:bg-gray-900 dark:border-gray-800">
+      
+      {/* LEFT SIDE: Search Bar */}
+      <div className="flex-1 max-w-md">
+        <div className="relative">
+          <span className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+            <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </span>
+          <input
+            type="text"
+            className="w-full py-2 pl-10 pr-4 text-sm bg-gray-100 border border-transparent rounded-lg focus:bg-white focus:ring-2 focus:ring-blue-500 outline-none transition-all dark:bg-gray-800 dark:text-white"
+            placeholder="Search movies..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+          <IoMdSearch className="absolute right-5 top-1/2 -translate-y-1/2"/>
+        </div>
+      </div>
+
+      {/* RIGHT SIDE: Notifications & Profile */}
+      <div className="flex items-center space-x-3 ml-4">
+        
+        {/* Notification Container */}
+        <div className="relative" ref={dropdownRef}>
+          <button 
+            onClick={() => setIsNotifyOpen(!isNotifyOpen)}
+            className={`relative p-2 rounded-full transition-colors ${isNotifyOpen ? 'bg-gray-100 dark:bg-gray-800 text-blue-600' : 'text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800'}`}
+          >
+            <span className="absolute top-2 right-2.5 w-2 h-2 bg-red-500 rounded-full border-2 border-white dark:border-gray-900"></span>
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+            </svg>
+          </button>
+
+          {/* DROPDOWN BOX */}
+          {isNotifyOpen && (
+            <div className="absolute right-0 mt-2 w-80 bg-white rounded-xl shadow-lg border border-gray-200 py-2 z-50 animate-in fade-in zoom-in duration-150 dark:bg-gray-900 dark:border-gray-800">
+              <div className="px-4 py-2 font-semibold text-gray-800 border-b border-gray-100 dark:text-white dark:border-gray-800">
+                Notifications
+              </div>
+              <div className="max-h-64 overflow-y-auto">
+                {notifications.map((n) => (
+                  <div key={n.id} className="px-4 py-3 hover:bg-gray-50 cursor-pointer border-b border-gray-50 last:border-0 dark:hover:bg-gray-800 dark:border-gray-800">
+                    <p className="text-sm text-gray-700 dark:text-gray-300">{n.text}</p>
+                    <span className="text-xs text-gray-400 mt-1 block">{n.time}</span>
+                  </div>
+                ))}
+              </div>
+              <button className="w-full py-2 text-sm text-blue-600 font-medium hover:bg-blue-50 transition-colors dark:hover:bg-blue-900/20">
+                View all notifications
+              </button>
+            </div>
           )}
         </div>
 
-        <button
-          type="button"
-          onClick={() => setIsCollapsed((prev) => !prev)}
-          className="rounded-md border border-slate-300 dark:border-slate-700 p-1.5 hover:bg-slate-200/70 dark:hover:bg-slate-800/70 transition"
-          aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
-          title={isCollapsed ? "Expand" : "Collapse"}
-        >
-          {isCollapsed ? (
-            <TbLayoutSidebarLeftExpand className="text-lg" />
-          ) : (
-            <TbLayoutSidebarLeftCollapse className="text-lg" />
-          )}
+        {/* Profile Icon */}
+        <button className="flex items-center">
+          <div className="w-9 h-9 overflow-hidden border-2 border-gray-200 rounded-full">
+            <img
+              src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=80&q=80"
+              className="object-cover w-full h-full"
+              alt="Profile"
+            />
+          </div>
         </button>
-      </div>
 
-      <nav>
-        <ul className="flex flex-col gap-2">
-          {navItems.map((item) => {
-            const Icon = item.icon;
-            const isActive = pathname === item.href;
-
-            return (
-              <li key={item.href}>
-                <Link
-                  href={item.href}
-                  className={`group flex items-center rounded-md px-3 py-2 transition ${
-                    isActive
-                      ? "bg-violet-200/70 text-violet-900 dark:bg-violet-500/25 dark:text-violet-100"
-                      : "text-slate-700 dark:text-slate-300 hover:bg-slate-200/60 dark:hover:bg-slate-800/70 hover:text-slate-900 dark:hover:text-white"
-                  } ${isCollapsed ? "justify-center" : "gap-3"}`}
-                >
-                  <Icon
-                    className={`text-xl ${isActive ? "text-violet-700 dark:text-violet-300" : "text-slate-600 dark:text-slate-300"}`}
-                  />
-                  {!isCollapsed && (
-                    <span className="text-sm font-medium">{item.label}</span>
-                  )}
-                </Link>
-              </li>
-            );
-          })}
-        </ul>
-      </nav>
-      <div className="relative top-0 w-full flex justify-center items-center">
-        <ThemeToggle />
       </div>
-    </aside>
+    </nav>
   );
+
 }

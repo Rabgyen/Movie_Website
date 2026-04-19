@@ -8,6 +8,7 @@ import { useEffect } from "react";
 import { FaPlay } from "react-icons/fa";
 import { IoDownloadOutline } from "react-icons/io5";
 
+
 type MovieSliderProps = {
   movies: MovieType[];
 };
@@ -34,7 +35,7 @@ export default function MovieSlider({ movies }: MovieSliderProps) {
   return(
    <div
       ref={sliderRef}
-      className="keen-slider w-full h-[650px] relative overflow-hidden rounded-xl cursor-pointer"
+      className="keen-slider w-full h-87.5 md:h-162.5 relative overflow-hidden rounded-xl cursor-pointer"
     >
       {movies.map((movie: MovieType) => (
         <div className="keen-slider__slide relative w-full h-full" key={movie.id}>
@@ -48,10 +49,10 @@ export default function MovieSlider({ movies }: MovieSliderProps) {
               alt={movie.title}
             />
             <div className="absolute flex flex-col w-full gap-2 p-4 h-auto text-white bottom-4">
-              <h2 className="text-2xl h-[50px] flex items-center font-semibold">
+              <h2 className="text-2xl h-12.5 flex items-center font-semibold">
                 {movie.title}
               </h2>
-              <p className="max-w-[500px] h-auto mb-3 text-[14px]">
+              <p className="max-w-125 hidden sm:flex h-auto mb-3 text-[14px]">
                 {movie.overview}
               </p>
               <div className="flex gap-4">
