@@ -15,18 +15,24 @@ export const getMovies = async(page:number):Promise<MovieType[]> => {
     }
 }
 
-export const getGenres = async (): Promise<GenreType[]> => {
+export const getGenres = async (): Promise<Record<number, string>> => {
   try {
     const res = await fetch(
       `${BASE_URL}/genre/movie/list?api_key=${API_KEY}&language=en-US`
     );
 
     const data = await res.json();
-    return data.genres;
+
+    const genreMap: Record<number, string> = {};
+    data.genres.forEach((genre: GenreType) => {
+      genreMap[genre.id] = genre.name;
+    })
+
+    return genreMap;
 
   } catch (err) {
     console.error("Error fetching genres:", err);
-    return [];
+    return {};
   }
 };
 
