@@ -8,7 +8,6 @@ export default function NavBar(){
   const [isNotifyOpen, setIsNotifyOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -27,8 +26,7 @@ export default function NavBar(){
 
   return (
     <nav className="relative flex items-center justify-between w-full px-4 py-3 bg-white border-b border-gray-200 dark:bg-gray-900 dark:border-gray-800">
-      
-      {/* LEFT SIDE: Search Bar */}
+
       <div className="flex-1 max-w-md">
         <div className="relative">
           <span className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -47,7 +45,6 @@ export default function NavBar(){
         </div>
       </div>
 
-      {/* RIGHT SIDE: Notifications & Profile */}
       <div className="flex items-center space-x-3 ml-4">
         
         {/* Notification Container */}
@@ -62,7 +59,6 @@ export default function NavBar(){
             </svg>
           </button>
 
-          {/* DROPDOWN BOX */}
           {isNotifyOpen && (
             <div className="absolute right-0 mt-2 w-80 bg-white rounded-xl shadow-lg border border-gray-200 py-2 z-50 animate-in fade-in zoom-in duration-150 dark:bg-gray-900 dark:border-gray-800">
               <div className="px-4 py-2 font-semibold text-gray-800 border-b border-gray-100 dark:text-white dark:border-gray-800">
@@ -83,7 +79,6 @@ export default function NavBar(){
           )}
         </div>
 
-        {/* Profile Icon */}
         <button className="flex items-center">
           <div className="w-9 h-9 overflow-hidden border-2 border-gray-200 rounded-full">
             <img

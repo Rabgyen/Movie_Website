@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useEffect } from "react";
 import { FaPlay } from "react-icons/fa";
 import { IoDownloadOutline } from "react-icons/io5";
+import StarRating from "./starRating";
 
 
 type MovieSliderProps = {
@@ -40,7 +41,7 @@ export default function MovieSlider({ movies }: MovieSliderProps) {
       {movies.map((movie: MovieType) => (
         <div className="keen-slider__slide relative w-full h-full" key={movie.id}>
           <Link href={`/movie/${movie.id}`} className="block w-full h-full">
-            <div className="absolute p-3 text-xs text-white rounded shadow-lg bg-white/10 backdrop-blur-md-xl top-5 left-5">
+            <div className="absolute p-3 text-xs text-white rounded-lg shadow-lg bg-white/10 backdrop-blur-md-xl top-5 left-5">
               Popular Movies 🔥
             </div>
             <img
@@ -52,6 +53,7 @@ export default function MovieSlider({ movies }: MovieSliderProps) {
               <h2 className="text-2xl h-12.5 flex items-center font-semibold">
                 {movie.title}
               </h2>
+              <StarRating rating={movie.vote_average ?? 0} />
               <p className="max-w-125 hidden sm:flex h-auto mb-3 text-[14px]">
                 {movie.overview}
               </p>
