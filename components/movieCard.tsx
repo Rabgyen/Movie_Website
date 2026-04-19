@@ -9,7 +9,7 @@ import { movieDetails } from "@/source/tmdb";
 
 type MovieCardProps = {
   movie: MovieType;
-  genreMap: Record<number, string>;
+  genreMap?: Record<number, string>;
 };
 
 export default function MovieCard({ movie }: MovieCardProps) {

@@ -71,3 +71,19 @@ export const getMovieCast = async(id: string|number): Promise<MovieCast[] | []> 
   }
 
 }
+
+export const getSearchedMovies = async(searchQuery:string | null): Promise<MovieType[]> => {
+  try{
+    const normalizedQuery = (searchQuery ?? "").trim();
+    if (!normalizedQuery) {
+      return [];
+    }
+
+    const response = await fetch(`${BASE_URL}/search/movie?api_key=${API_KEY}&language=en-US&query=${encodeURIComponent(normalizedQuery)}&page=1`);
+    const data = await response.json();
+    return data.results;
+  }catch(err){
+    console.log(err);
+    return[];
+  }
+}

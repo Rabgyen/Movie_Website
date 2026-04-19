@@ -1,7 +1,7 @@
 "use client";
 
 import MovieCard from "@/components/movieCard";
-import { getGenres, getMovieCast, getMovies, getPopularMovies } from "@/source/tmdb";
+import { getGenres, getMovieCast, getMovies, getPopularMovies, getSearchedMovies } from "@/source/tmdb";
 import { useState, useEffect } from "react";
 import { GenreType, MovieType } from "@/types/types";
 import { useMoviePage } from "@/context/moviesPageContext";
@@ -9,6 +9,7 @@ import ClientSideLoading from "./clientSideLoading";
 import { FaArrowRight } from "react-icons/fa";
 import MovieSlider from "@/components/movieSlider"
 import NavBar from "@/components/navbar"
+import { SearchMovieProvider } from "@/context/searchMovieContext";
 
 export default function Home() {
   const [movies, setMovies] = useState<MovieType[]>([]);
@@ -27,7 +28,6 @@ export default function Home() {
       ]);
       const safeMovieData = Array.isArray(movieData) ? movieData : [];
 
-      // TMDB or dev double-renders can return duplicate ids; keep one card per movie id.
       setMovies((prev) => {
         const merged = [...prev, ...safeMovieData];
         const uniqueById = new Map<number, MovieType>();
@@ -52,13 +52,12 @@ export default function Home() {
     loadPopularMovies();
   }, []);
 
-
   console.log(movies);
   console.log(genres);
   console.log( popularMovies);
   return (
     <div className="relative flex w-full border-2 min-h-full flex-col items-center justify-start py-2 px-4 shadow-2xl  text-black dark:text-white">
-      <NavBar/>
+      <NavBar />
       <MovieSlider movies={popularMovies}/>
       {loading && (
         <div className="pointer-events-none absolute inset-0 z-10 bg-white/45 dark:bg-black/35 backdrop-blur-[1px]">

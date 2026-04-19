@@ -2,11 +2,21 @@
 
 import { useState, useRef, useEffect } from "react";
 import { IoMdSearch } from "react-icons/io";
+import { useSearchMovie } from "@/context/searchMovieContext"
+import { useRouter } from "next/navigation";
 
 export default function NavBar(){
+  const router = useRouter();
    const [search, setSearch] = useState("");
   const [isNotifyOpen, setIsNotifyOpen] = useState(false);
+
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const handleSearch = () => {
+    if(!search.trim()) return;
+
+    router.push(`/search?query=${encodeURIComponent(search)}`);
+  }
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -24,6 +34,7 @@ export default function NavBar(){
     { id: 3, text: "Special offer: 50% off Premium", time: "3h ago" },
   ];
 
+
   return (
     <nav className="relative flex items-center justify-between w-full px-4 py-3 bg-white border-b border-gray-200 dark:bg-gray-900 dark:border-gray-800">
 
@@ -40,14 +51,18 @@ export default function NavBar(){
             placeholder="Search movies..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
+            onKeyDown={(e) => {
+            if(e.key === "Enter"){
+              handleSearch();
+            }
+          }}
           />
-          <IoMdSearch className="absolute right-5 top-1/2 -translate-y-1/2"/>
+          <IoMdSearch className="absolute right-5 top-1/2 -translate-y-1/2" onClick={handleSearch} />
         </div>
       </div>
 
       <div className="flex items-center space-x-3 ml-4">
-        
-        {/* Notification Container */}
+
         <div className="relative" ref={dropdownRef}>
           <button 
             onClick={() => setIsNotifyOpen(!isNotifyOpen)}
