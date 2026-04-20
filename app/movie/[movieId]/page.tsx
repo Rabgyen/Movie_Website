@@ -36,7 +36,7 @@ export default async function MovieDetail({
           {movieDetail.overview}
         </p>
         <span className="flex gap-4">
-          <button className="flex items-center gap-2 py-3 px-6 bg-[#fa0103] rounded-lg shadow-[0_0_30px_rgba(255,0,0,0.9)] border-none">
+          <button className="flex items-center gap-2 py-3 px-6 bg-[#fa0103] rounded-lg shadow-[0_0_30px_rgba(255,0,0,0.9)] hover:shadow-[0_0_70px_rgba(255,0,0,0.9)] border-none transition-all duration-300">
             Watch Now <FaPlay />
           </button>
           <button className="flex items-center gap-2 py-3 px-6 bg-white/10 backdrop-blur-md rounded-lg text-white ">

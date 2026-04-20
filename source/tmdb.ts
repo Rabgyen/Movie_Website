@@ -1,11 +1,25 @@
 import { MovieType, GenreType, MovieCast } from "@/types/types";
 
-const API_KEY:string = "YOUR_API_KEY";
+const API_KEY = process.env.NEXT_PUBLIC_TMDB_API_KEY;
+
+const getApiKey = (): string => {
+  if (!API_KEY) {
+    throw new Error("Missing NEXT_PUBLIC_TMDB_API_KEY environment variable");
+  }
+
+  return API_KEY;
+};
+
+if(!API_KEY){
+  throw new Error("Missing API KEY")
+}
+
+
 const BASE_URL: string = "https://api.themoviedb.org/3";
 
 export const getMovies = async(page:number):Promise<MovieType[]> => {
     try{
-        const response = await fetch(`${BASE_URL}/discover/movie?api_key=${API_KEY}&language=en-US&sort_by=popularity.desc&page=${page}`)
+    const response = await fetch(`${BASE_URL}/discover/movie?api_key=${getApiKey()}&language=en-US&sort_by=popularity.desc&page=${page}`)
 
         const data = await response.json()
         return data.results;
@@ -18,7 +32,7 @@ export const getMovies = async(page:number):Promise<MovieType[]> => {
 export const getGenres = async (): Promise<Record<number, string>> => {
   try {
     const res = await fetch(
-      `${BASE_URL}/genre/movie/list?api_key=${API_KEY}&language=en-US`
+      `${BASE_URL}/genre/movie/list?api_key=${getApiKey()}&language=en-US`
     );
 
     const data = await res.json();
@@ -38,7 +52,7 @@ export const getGenres = async (): Promise<Record<number, string>> => {
 
 export const movieDetails = async (id: string | number): Promise<MovieType | null> => {
   try {
-    const response = await fetch(`${BASE_URL}/movie/${id}?api_key=${API_KEY}&language=en-US`);
+    const response = await fetch(`${BASE_URL}/movie/${id}?api_key=${getApiKey()}&language=en-US`);
     const data = await response.json();
     return response.ok ? data : null;
   } catch (err) {
@@ -49,7 +63,7 @@ export const movieDetails = async (id: string | number): Promise<MovieType | nul
 
 export const getPopularMovies = async():Promise<MovieType[] | []> => {
   try{
-    const response = await fetch(`${BASE_URL}/movie/popular?api_key=${API_KEY}&language=en-US&page=1`);
+    const response = await fetch(`${BASE_URL}/movie/popular?api_key=${getApiKey()}&language=en-US&page=1`);
     const data = await response.json();
     return data.results;
   }catch(err) {
@@ -62,7 +76,7 @@ export const getPopularMovies = async():Promise<MovieType[] | []> => {
 
 export const getMovieCast = async(id: string|number): Promise<MovieCast[] | []> => {
   try{
-    const response = await fetch(`${BASE_URL}/movie/${id}/credits?api_key=${API_KEY}&language=en-US`);
+    const response = await fetch(`${BASE_URL}/movie/${id}/credits?api_key=${getApiKey()}&language=en-US`);
     const data = await response.json();
     return data.cast;
   }catch(err){
@@ -79,7 +93,7 @@ export const getSearchedMovies = async(searchQuery:string | null): Promise<Movie
       return [];
     }
 
-    const response = await fetch(`${BASE_URL}/search/movie?api_key=${API_KEY}&language=en-US&query=${encodeURIComponent(normalizedQuery)}&page=1`);
+    const response = await fetch(`${BASE_URL}/search/movie?api_key=${getApiKey()}&language=en-US&query=${encodeURIComponent(normalizedQuery)}&page=1`);
     const data = await response.json();
     return data.results;
   }catch(err){

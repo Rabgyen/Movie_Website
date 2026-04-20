@@ -26,10 +26,11 @@ export default function MovieCard({ movie }: MovieCardProps) {
   return (
     <Link href={`/movie/${movie.id}`}>
       <div className=" bg-[#FDFAF6] rounded-lg shadow-2xl flex flex-col over dark:bg-[#202020] overflow-hidden ">
-        <div className="">
+        <div className="overflow-hidden">
           <img
             src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
             alt="movie-img"
+            className="hover:scale-110 transition-all duration-300"
           />
         </div>
         <div className="flex flex-col gap-2 p-2 justify-between flex-1 min-h-20 text-xs">

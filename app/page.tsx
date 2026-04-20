@@ -1,7 +1,7 @@
 "use client";
 
 import MovieCard from "@/components/movieCard";
-import { getGenres, getMovieCast, getMovies, getPopularMovies, getSearchedMovies } from "@/source/tmdb";
+import { getGenres, getMovies, getPopularMovies } from "@/source/tmdb";
 import { useState, useEffect } from "react";
 import { GenreType, MovieType } from "@/types/types";
 import { useMoviePage } from "@/context/moviesPageContext";
@@ -9,7 +9,6 @@ import ClientSideLoading from "./clientSideLoading";
 import { FaArrowRight } from "react-icons/fa";
 import MovieSlider from "@/components/movieSlider"
 import NavBar from "@/components/navbar"
-import { SearchMovieProvider } from "@/context/searchMovieContext";
 
 export default function Home() {
   const [movies, setMovies] = useState<MovieType[]>([]);
@@ -53,6 +52,7 @@ export default function Home() {
   }, []);
 
   console.log(movies);
+  console.log("genre")
   console.log(genres);
   console.log( popularMovies);
   return (
