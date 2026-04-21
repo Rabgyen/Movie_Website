@@ -1,4 +1,4 @@
-import { movieDetails, getGenres, getMovieCast } from "@/source/tmdb";
+import { movieDetails, getMovieCast } from "@/source/tmdb";
 import { FaPlay, FaStar } from "react-icons/fa";
 import { TbChartBarPopular } from "react-icons/tb";
 import { HiCalendarDateRange } from "react-icons/hi2";

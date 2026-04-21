@@ -1,7 +1,7 @@
 "use client";
 
 import MovieCard from "@/components/movieCard";
-import { getGenres, getMovies, getPopularMovies } from "@/source/tmdb";
+import { fetchGenre, mapGenre, getMovies, getPopularMovies } from "@/source/tmdb";
 import { useState, useEffect } from "react";
 import { GenreType, MovieType } from "@/types/types";
 import { useMoviePage } from "@/context/moviesPageContext";
@@ -17,13 +17,12 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const { page, setPage } = useMoviePage();
   const genreMap = Object.fromEntries(genres.map((genre) => [genre.id, genre.name])) as Record<number, string>;
- 
   useEffect(() => {
     const loadData = async () => {
       setLoading(true);
       const [movieData, genreData] = await Promise.all([
         getMovies(page),
-        getGenres(),
+        mapGenre(),
       ]);
       const safeMovieData = Array.isArray(movieData) ? movieData : [];
 
@@ -51,10 +50,7 @@ export default function Home() {
     loadPopularMovies();
   }, []);
 
-  console.log(movies);
-  console.log("genre")
-  console.log(genres);
-  console.log( popularMovies);
+  
   return (
     <div className="relative flex w-full border-2 min-h-full flex-col items-center justify-start py-2 px-4 shadow-2xl  text-black dark:text-white">
       <NavBar />

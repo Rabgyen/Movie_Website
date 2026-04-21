@@ -36,7 +36,7 @@ export default function NavBar(){
 
 
   return (
-    <nav className="relative flex items-center justify-between w-full px-4 py-3 bg-white border-b border-gray-200 dark:bg-gray-900 dark:border-gray-800">
+    <nav className="relative flex items-center justify-between w-full px-4 py-3 bg-white border-b border-gray-200 dark:bg-[#0a0a0a] dark:border-gray-800">
 
       <div className="flex-1 max-w-md">
         <div className="relative">

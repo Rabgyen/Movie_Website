@@ -29,7 +29,7 @@ export const getMovies = async(page:number):Promise<MovieType[]> => {
     }
 }
 
-export const getGenres = async (): Promise<Record<number, string>> => {
+export const mapGenre = async (): Promise<GenreType[]> => {
   try {
     const res = await fetch(
       `${BASE_URL}/genre/movie/list?api_key=${getApiKey()}&language=en-US`
@@ -37,18 +37,30 @@ export const getGenres = async (): Promise<Record<number, string>> => {
 
     const data = await res.json();
 
-    const genreMap: Record<number, string> = {};
-    data.genres.forEach((genre: GenreType) => {
-      genreMap[genre.id] = genre.name;
-    })
-
-    return genreMap;
+    return Array.isArray(data.genres) ? data.genres : [];
 
   } catch (err) {
     console.error("Error fetching genres:", err);
-    return {};
+    return [];
   }
 };
+
+export const fetchGenre = async (): Promise<GenreType[]> => {
+  try {
+    const res = await fetch(
+      `${BASE_URL}/genre/movie/list?api_key=${getApiKey()}&language=en-US`
+    );
+
+    const data = await res.json();
+
+    return Array.isArray(data.genres) ? data.genres : [];
+
+  } catch (err) {
+    console.error("Error fetching genres:", err);
+    return [];
+  }
+};
+
 
 export const movieDetails = async (id: string | number): Promise<MovieType | null> => {
   try {
@@ -69,9 +81,7 @@ export const getPopularMovies = async():Promise<MovieType[] | []> => {
   }catch(err) {
     console.log(err) 
     return [];
-
 }
-
 }
 
 export const getMovieCast = async(id: string|number): Promise<MovieCast[] | []> => {
