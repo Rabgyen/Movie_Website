@@ -29,7 +29,7 @@ export default function MovieCard({ movie }: MovieCardProps) {
         <div className="overflow-hidden">
           <img
             src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-            alt="movie-img"
+            alt={movie.title}
             className="hover:scale-110 transition-all duration-300"
           />
         </div>

@@ -50,7 +50,6 @@ export default function Home() {
     loadPopularMovies();
   }, []);
 
-  
   return (
     <div className="relative flex w-full border-2 min-h-full flex-col items-center justify-start py-2 px-4 shadow-2xl  text-black dark:text-white">
       <NavBar />

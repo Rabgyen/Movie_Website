@@ -2,7 +2,6 @@
 
 import { useState, useRef, useEffect } from "react";
 import { IoMdSearch } from "react-icons/io";
-import { useSearchMovie } from "@/context/searchMovieContext"
 import { useRouter } from "next/navigation";
 
 export default function NavBar(){

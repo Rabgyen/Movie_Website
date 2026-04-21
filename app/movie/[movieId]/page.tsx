@@ -22,6 +22,9 @@ export default async function MovieDetail({
     );
   }
   return (
+
+    
+
     <div className="relative dark:border-white h-full w-full flex p-2 sm:p-5 md:p-10 items-center overflow-auto shadow-4xl ">
       <img
         src={`https://image.tmdb.org/t/p/original${movieDetail.backdrop_path}`}

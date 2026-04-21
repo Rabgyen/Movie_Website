@@ -111,3 +111,20 @@ export const getSearchedMovies = async(searchQuery:string | null): Promise<Movie
     return[];
   }
 }
+
+export const getGenreMovies = async (id:string | null): Promise<MovieType[]> => {
+  try {
+    if (id === null) {
+      return [];
+    }
+
+    const response = await fetch(
+      `${BASE_URL}/discover/movie?api_key=${getApiKey()}&with_genres=${id}`
+    );
+    const data = await response.json();
+    return Array.isArray(data.results) ? data.results : [];
+  } catch (err) {
+    console.log(err);
+    return [];
+  }
+}
