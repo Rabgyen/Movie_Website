@@ -6,9 +6,9 @@ import { useState } from "react";
 import { MdHome } from "react-icons/md";
 import { FiCompass } from "react-icons/fi";
 import { IoFileTrayStacked } from "react-icons/io5";
-import { GrFavorite } from "react-icons/gr";
 import { FaBookmark } from "react-icons/fa6";
 import { HiOutlineMenuAlt3 } from "react-icons/hi";
+import { LiaHeartSolid } from "react-icons/lia";
 import {
   TbLayoutSidebarLeftExpand,
   TbLayoutSidebarLeftCollapse,
@@ -19,7 +19,7 @@ const sidebarItems = [
   { label: "Home", href: "/", icon: MdHome },
   { label: "Explore", href: "/explore", icon: FiCompass },
   { label: "Genre", href: "/genre", icon: IoFileTrayStacked },
-  { label: "Favourites", href: "/favourites", icon: GrFavorite },
+  { label: "Favourites", href: "/favourites", icon: LiaHeartSolid },
   { label: "Watch Later", href: "/watch-later", icon: FaBookmark },
 ];
 

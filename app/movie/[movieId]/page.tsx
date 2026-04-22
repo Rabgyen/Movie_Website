@@ -1,9 +1,11 @@
 import { movieDetails, getMovieCast } from "@/source/tmdb";
-import { FaPlay, FaStar } from "react-icons/fa";
+import { FaPlay, FaStar, FaBookmark } from "react-icons/fa";
 import { TbChartBarPopular } from "react-icons/tb";
 import { HiCalendarDateRange } from "react-icons/hi2";
 import Cast from "@/components/cast";
 import { FaArrowRightLong } from "react-icons/fa6";
+import { LiaHeartSolid } from "react-icons/lia";
+import { useFavoriteMovie } from "@/context/favoriteMovie";
 
 export default async function MovieDetail({
   params,
@@ -16,7 +18,7 @@ export default async function MovieDetail({
 
   if (!movieDetail) {
     return (
-      <div className="flex h-full w-full items-center justify-center">
+      <div className="flex h-full w-full items-center justify-center font-bold">
         <p>Movie not found.</p>
       </div>
     );
@@ -48,6 +50,14 @@ export default async function MovieDetail({
               Trailer
             </p>{" "}
           </button>
+          <span className="flex gap-4 items-center">
+              <span className="p-3 rounded-full bg-black/55 text-white backdrop-blur-sm transition hover:scale-105 hover:bg-black/75">
+                <FaBookmark />
+              </span>
+              <span className="p-3 rounded-full bg-black/55 text-white backdrop-blur-sm transition hover:scale-105 hover:bg-black/75">
+                <LiaHeartSolid/>
+              </span>
+            </span>
         </span>
         <div className="flex gap-2 flex-wrap flex-col">
           <h1 className="drop-shadow-[4px_4px_10px_rgba(0,0,0,0.9)]">Top Casts:</h1>

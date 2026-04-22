@@ -9,6 +9,7 @@ import ClientSideLoading from "./clientSideLoading";
 import { FaArrowRight } from "react-icons/fa";
 import MovieSlider from "@/components/movieSlider"
 import NavBar from "@/components/navbar"
+import { FavoriteMovieProvider } from "@/context/favoriteMovie";
 
 export default function Home() {
   const [movies, setMovies] = useState<MovieType[]>([]);
@@ -61,9 +62,11 @@ export default function Home() {
       )}
       <h1 className="w-full py-4 font-semibold text-2xl">Movies You May Like:</h1>
     <div className="grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-4 p-2 w-full">
-      {(movies ?? []).map((movie: MovieType) => (
+      
+        {(movies ?? []).map((movie: MovieType) => (
         <MovieCard key={movie.id} movie={movie} genreMap={genreMap} />
       ))}
+  
       <div className="group border-2 text-black border-white/40 dark:border-white/10 rounded-lg flex items-center justify-center hover:opacity-75 gap-2 min-h-100 dark:text-white bg-[#FDFAF6] dark:bg-[#070c1a] shadow-xl" onClick={() => setPage((prev) => prev + 1)}>
         See More <FaArrowRight className="transition-transform duration-300 group-hover:translate-x-1" />
       </div>

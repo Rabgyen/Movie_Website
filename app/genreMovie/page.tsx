@@ -47,9 +47,6 @@ export default function GenreMovie() {
           {(genreMovies ?? []).map((movie: MovieType) => (
             <MovieCard key={movie.id} movie={movie} />
           ))}
-          <div className="group border-2 text-black border-white/40 dark:border-white/10 rounded-lg flex items-center justify-center hover:opacity-75 gap-2 min-h-100 dark:text-white bg-[#FDFAF6] dark:bg-[#070c1a] shadow-xl">
-            See More <FaArrowRight className="transition-transform duration-300 group-hover:translate-x-1" />
-          </div>
         </div>
   </div>;
 }
