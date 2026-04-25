@@ -1,3 +1,5 @@
+"use client"
+
 import { MovieType } from "@/types/types";
 import { createContext, ReactNode, useContext, useEffect, useState } from "react";
 
@@ -16,6 +18,8 @@ type SavedMoviePropType = {
 
 const SavedMovieContextProvider = ({ children }: SavedMoviePropType) => {
   const [savedMovies, setSavedMovies] = useState<MovieType[]>(() => {
+    if (typeof window === "undefined") return [];
+
     const storedSavedMovies = localStorage.getItem("savedMovies");
 
     return storedSavedMovies ? JSON.parse(storedSavedMovies) : [];
@@ -42,7 +46,7 @@ const SavedMovieContextProvider = ({ children }: SavedMoviePropType) => {
   const isSavedMovie = (movieId: number) => savedMovies.some((movie) => movie.id === movieId);
 
   return (
-    <SavedMovieContext
+    <SavedMovieContext.Provider
       value={{
         savedMovies,
         addToSavedMovie,
@@ -51,7 +55,7 @@ const SavedMovieContextProvider = ({ children }: SavedMoviePropType) => {
       }}
     >
       {children}
-    </SavedMovieContext>
+    </SavedMovieContext.Provider>
   );
 };
 
@@ -64,3 +68,5 @@ const useSavedMovies = () => {
 
     return context;
 }
+
+export {SavedMovieContextProvider,useSavedMovies};

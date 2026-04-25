@@ -19,8 +19,8 @@ const sidebarItems = [
   { label: "Home", href: "/", icon: MdHome },
   { label: "Explore", href: "/explore", icon: FiCompass },
   { label: "Genre", href: "/genre", icon: IoFileTrayStacked },
-  { label: "Favourites", href: "/favourites", icon: LiaHeartSolid },
-  { label: "Watch Later", href: "/watch-later", icon: FaBookmark },
+  { label: "Favourites", href: "/favorites", icon: LiaHeartSolid },
+  { label: "Watch Later", href: "/savedMovies", icon: FaBookmark },
 ];
 
 export default function Sidebar() {

@@ -6,6 +6,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { MoviePageProvider } from "@/context/moviesPageContext";
 import Sidebar from "@/components/sideBar";
 import { FavoriteMovieProvider } from "@/context/favoriteMovie";
+import { SavedMovieContextProvider } from "@/context/savedMoviesContext";
 
 const inter = Inter({subsets:['latin'],variable:'--font-sans'});
 
@@ -53,7 +54,9 @@ export default function RootLayout({
           <main className="main-scrollbar h-full w-full rounded-lg overflow-y-auto">
             <MoviePageProvider>
               <FavoriteMovieProvider>
-              {children}
+              <SavedMovieContextProvider>
+                {children}
+              </SavedMovieContextProvider>
               </FavoriteMovieProvider>
               </MoviePageProvider>
           </main>

@@ -1,3 +1,5 @@
+"use client";
+
 import { movieDetails, getMovieCast } from "@/source/tmdb";
 import { FaPlay, FaStar, FaBookmark } from "react-icons/fa";
 import { TbChartBarPopular } from "react-icons/tb";
@@ -5,18 +7,79 @@ import { HiCalendarDateRange } from "react-icons/hi2";
 import Cast from "@/components/cast";
 import { FaArrowRightLong } from "react-icons/fa6";
 import { LiaHeartSolid } from "react-icons/lia";
+import { useEffect, useState } from "react";
 import { useFavoriteMovie } from "@/context/favoriteMovie";
+import { useParams } from "next/navigation";
 
-export default async function MovieDetail({
-  params,
-}: {
-  params: Promise<{ movieId: string }>;
-}) {
-  const { movieId } = await params;
-  const movieDetail = await movieDetails(movieId);
-  const casts = await getMovieCast(movieId);
+export default function MovieDetail() {
+  const params = useParams<{ movieId: string | string[] }>();
+  const movieId = Array.isArray(params?.movieId) ? params.movieId[0] : params?.movieId;
+  const [movieDetail, setMovieDetail] = useState<Awaited<ReturnType<typeof movieDetails>> | null>(
+    null,
+  );
+  const [casts, setCasts] = useState<Awaited<ReturnType<typeof getMovieCast>>>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [notFound, setNotFound] = useState(false);
 
-  if (!movieDetail) {
+  useEffect(() => {
+    let isMounted = true;
+
+    const loadMovieData = async () => {
+      if (!movieId) {
+        setIsLoading(false);
+        setNotFound(true);
+        return;
+      }
+
+      setIsLoading(true);
+      setNotFound(false);
+
+      try {
+        const [detail, castList] = await Promise.all([
+          movieDetails(movieId),
+          getMovieCast(movieId),
+        ]);
+
+        if (!isMounted) return;
+
+        if (!detail) {
+          setMovieDetail(null);
+          setCasts([]);
+          setNotFound(true);
+          return;
+        }
+
+        setMovieDetail(detail);
+        setCasts(castList);
+      } catch {
+        if (!isMounted) return;
+
+        setMovieDetail(null);
+        setCasts([]);
+        setNotFound(true);
+      } finally {
+        if (isMounted) {
+          setIsLoading(false);
+        }
+      }
+    };
+
+    loadMovieData();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [movieId]);
+
+  if (isLoading) {
+    return (
+      <div className="flex h-full w-full items-center justify-center font-bold">
+        <p>Loading movie...</p>
+      </div>
+    );
+  }
+
+  if (notFound || !movieDetail) {
     return (
       <div className="flex h-full w-full items-center justify-center font-bold">
         <p>Movie not found.</p>
