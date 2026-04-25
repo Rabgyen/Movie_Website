@@ -128,3 +128,27 @@ export const getGenreMovies = async (id:string | null): Promise<MovieType[]> => 
     return [];
   }
 }
+
+export const movieTrailer = async (movieId: string): Promise<string | null> => {
+  try {
+    const response = await fetch(
+      `${BASE_URL}/movie/${movieId}/videos?api_key=${API_KEY}&language=en-US`
+    );
+
+    if (!response.ok) return null;
+
+    const data = await response.json();
+    const results: Array<{ type?: string; site?: string; key?: string }> = Array.isArray(data?.results)
+      ? data.results
+      : [];
+
+    const trailer = results.find(
+      (video) => video.type === "Trailer" && video.site === "YouTube" && video.key
+    );
+
+    return trailer?.key ? `https://www.youtube.com/watch?v=${trailer.key}` : null;
+  } catch (err) {
+    console.error("Failed to fetch movie trailer:", err);
+    return null;
+  }
+};

@@ -11,6 +11,8 @@ import { useEffect, useState } from "react";
 import { useFavoriteMovie } from "@/context/favoriteMovie";
 import { useSavedMovies } from "@/context/savedMoviesContext";
 import { useParams } from "next/navigation";
+import Trailer from "@/components/trailer";
+import { IoCloseCircle } from "react-icons/io5";
 
 export default function MovieDetail() {
   const { addToFavorite, removeFromFavorite, isFavoriteMovie } = useFavoriteMovie();
@@ -23,6 +25,7 @@ export default function MovieDetail() {
   const [casts, setCasts] = useState<Awaited<ReturnType<typeof getMovieCast>>>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
+  const [toggleTrailer, setToggleTrailer] = useState(false);
 
   useEffect(() => {
     let isMounted = true;
@@ -111,11 +114,19 @@ export default function MovieDetail() {
     addToSavedMovie(movieDetail);
   };
 
+  const handleToggleTrailer = () => {
+    setToggleTrailer(prev => !prev);
+  }
+
   return (
 
     
 
     <div className="relative dark:border-white h-full w-full flex p-2 sm:p-5 md:p-10 items-center overflow-auto shadow-4xl ">
+      {toggleTrailer && <div className="absolute top-0 h-full w-full left-0 z-100 p-10 bg-black/80 ">
+        <IoCloseCircle className="absolute top-6 right-6 text-2xl" onClick={handleToggleTrailer}/>
+        <Trailer movieId={movieId}/>
+      </div>}
       <img
         src={`https://image.tmdb.org/t/p/original${movieDetail.backdrop_path}`}
         alt={movieDetail.title}
@@ -132,7 +143,7 @@ export default function MovieDetail() {
           <button className="flex items-center gap-2 py-3 px-6 bg-[#fa0103] rounded-lg shadow-[0_0_30px_rgba(255,0,0,0.9)] hover:shadow-[0_0_70px_rgba(255,0,0,0.9)] border-none transition-all duration-300">
             Watch Now <FaPlay />
           </button>
-          <button className="flex items-center gap-2 py-3 px-6 bg-white/10 backdrop-blur-md rounded-lg text-white ">
+          <button className="flex items-center gap-2 py-3 px-6 bg-white/10 backdrop-blur-md rounded-lg text-white " onClick={handleToggleTrailer}>
             {" "}
             <p className="drop-shadow-[4px_4px_10px_rgba(0,0,0,0.9)]">
               Trailer

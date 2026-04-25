@@ -52,7 +52,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="relative flex w-full border-2 min-h-full flex-col items-center justify-start py-2 px-4 shadow-2xl  text-black dark:text-white">
+    <div className="relative flex w-full border-2 min-h-full flex-col items-center justify-start py-2 px-6 shadow-2xl  text-black dark:text-white">
       <NavBar />
       <MovieSlider movies={popularMovies}/>
       {loading && (
@@ -61,7 +61,7 @@ export default function Home() {
         </div>
       )}
       <h1 className="w-full py-4 font-semibold text-2xl">Movies You May Like:</h1>
-    <div className="grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-4 p-2 w-full">
+    <div className="grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] gap-4 w-full">
       
         {(movies ?? []).map((movie: MovieType) => (
         <MovieCard key={movie.id} movie={movie} genreMap={genreMap} />

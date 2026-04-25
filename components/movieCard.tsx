@@ -41,14 +41,14 @@ export default function MovieCard({ movie }: MovieCardProps) {
   const genreName = movieDetail?.genres?.[0]?.name;
 
   return (
-      <div className="group relative overflow-hidden rounded-2xl border border-black/5 bg-[#FDFAF6] shadow-[0_12px_30px_rgba(0,0,0,0.12)] transition-transform duration-300 hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(0,0,0,0.16)] dark:border-white/10 dark:bg-[#202020]">
+      <div className="group relative h-full overflow-hidden rounded-xl border border-black/5 bg-[#FDFAF6] shadow-[0_10px_24px_rgba(0,0,0,0.10)] transition-transform duration-300 hover:-translate-y-1 hover:shadow-[0_14px_30px_rgba(0,0,0,0.14)] dark:border-white/10 dark:bg-[#202020]">
         <button
           type="button"
           aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
           onClick={favorite}
-          className="absolute right-3 top-3 z-10 grid h-9 w-9 place-items-center rounded-full bg-black/55 text-white backdrop-blur-sm transition hover:scale-105 hover:bg-black/75"
+          className="absolute right-2 top-2 z-10 grid h-8 w-8 place-items-center rounded-full bg-black/55 text-white backdrop-blur-sm transition hover:scale-105 hover:bg-black/75"
         >
-          <LiaHeartSolid className={`text-lg ${isFavorite ? "text-red-400" : "text-white"}`} />
+          <LiaHeartSolid className={`text-base ${isFavorite ? "text-red-400" : "text-white"}`} />
         </button>
 
         <Link href={`/movie/${movie.id}`} className="block">
@@ -60,23 +60,23 @@ export default function MovieCard({ movie }: MovieCardProps) {
             />
           </div>
 
-          <div className="flex flex-col gap-3 p-3 text-xs">
-            <div className="flex items-start justify-between gap-3">
-              <p className="line-clamp-2 text-sm font-bold leading-snug text-black dark:text-white">
+          <div className="flex flex-col gap-2 p-2 text-[11px]">
+            <div className="flex items-start justify-between gap-2">
+              <p className="line-clamp-2 text-[12px] font-bold leading-snug text-black dark:text-white">
                 {movie.title}
               </p>
-              <p className="shrink-0 rounded-full bg-black/5 px-2 py-1 text-[11px] font-medium text-black/70 dark:bg-white/10 dark:text-white/70">
+              <p className="shrink-0 rounded-full bg-black/5 px-1.5 py-0.5 text-[10px] font-medium text-black/70 dark:bg-white/10 dark:text-white/70">
                 {movie.release_date?.slice(0, 4) || "N/A"}
               </p>
             </div>
 
-            <div className="flex items-center justify-between gap-3 text-[11px] text-black/70 dark:text-white/70">
-              <span className="flex min-w-0 items-center gap-1.5">
+            <div className="flex items-center justify-between gap-2 text-[10px] text-black/70 dark:text-white/70">
+              <span className="flex min-w-0 items-center gap-1">
                 <MdMovieCreation className="shrink-0 text-yellow-500" />
                 <p className="truncate">{genreName || "Genre unavailable"}</p>
               </span>
 
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2.5">
                 <span className="flex items-center gap-1">
                   <FaStar className="text-yellow-300" />
                   <p>{movie.vote_average?.toFixed(1)}</p>
