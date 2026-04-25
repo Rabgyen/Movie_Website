@@ -6,7 +6,7 @@ import { useSavedMovies } from "@/context/savedMoviesContext";
 import { MovieType } from "@/types/types";
 
 export default function SavedMovies() {
-    const { savedMovies } = useSavedMovies();
+    const { savedMovies, removeAll } = useSavedMovies();
 
     return (
         <div className="h-full w-full text-2xl font-bold">
@@ -17,9 +17,14 @@ export default function SavedMovies() {
                     <h1 className="text-lg font-semibold text-black dark:text-white sm:text-xl">
                         Saved Movies
                     </h1>
-                    <p className="text-sm font-medium text-black/60 dark:text-white/60">
+                    <span className="flex gap-2 text-sm font-medium">
+                        <p className=" text-black/60 dark:text-white/60">
                         {savedMovies.length} saved
                     </p>
+                    <p className="cursor-pointer text-black/60 transition-colors hover:text-blue-400 hover:underline dark:text-white/60 dark:hover:text-blue-400" onClick={removeAll}>
+                        Remove All
+                    </p>
+                    </span>
                 </div>
 
                 {savedMovies.length === 0 ? (

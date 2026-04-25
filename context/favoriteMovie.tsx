@@ -8,6 +8,7 @@ type FavoriteMovieContextType = {
   removeFromFavorite: (movieId: number) => void;
   favoriteMovie: MovieType[];
   isFavoriteMovie:(movieId:number) => boolean;
+  removeAll:() => void;
 };
 
 const FavoriteMovieContext = createContext<FavoriteMovieContextType | null>(null);
@@ -17,13 +18,21 @@ type PropType = {
 };
 
 const FavoriteMovieProvider = ({ children }: PropType) => {
-  const [favoriteMovie, setFavoriteMovie] = useState<MovieType[]>(() => {
-    if (typeof window === "undefined") return [];
+  const [favoriteMovie, setFavoriteMovie] = useState<MovieType[]>([]);
+  const [isInitialized, setIsInitialized] = useState(false);
 
-    const storedFavs = localStorage.getItem("favoriteMovie");
-
-    return storedFavs ? JSON.parse(storedFavs) : [];
-  });
+  useEffect(() => {
+    try {
+      const storedFavs = localStorage.getItem("favoriteMovie");
+      if (storedFavs) {
+        setFavoriteMovie(JSON.parse(storedFavs));
+      }
+    } catch {
+      setFavoriteMovie([]);
+    } finally {
+      setIsInitialized(true);
+    }
+  }, []);
 
   const addToFavorite = (movie: MovieType) => {
     setFavoriteMovie((prev) => {
@@ -39,14 +48,21 @@ const FavoriteMovieProvider = ({ children }: PropType) => {
   };
 
   useEffect(() => {
+    if (!isInitialized) return;
+
     localStorage.setItem("favoriteMovie", JSON.stringify(favoriteMovie));
-  }, [favoriteMovie]);
+  }, [favoriteMovie, isInitialized]);
 
   const isFavoriteMovie = (movieId : number) => favoriteMovie.some((movie) => movie.id === movieId);
 
+  const removeAll = () => {
+    localStorage.removeItem("favoriteMovie");
+    setFavoriteMovie([]);
+  }
+
   return (
     <FavoriteMovieContext.Provider
-      value={{ favoriteMovie, addToFavorite, removeFromFavorite, isFavoriteMovie }}
+      value={{ favoriteMovie, addToFavorite, removeFromFavorite, isFavoriteMovie, removeAll }}
     >
       {children}
     </FavoriteMovieContext.Provider>

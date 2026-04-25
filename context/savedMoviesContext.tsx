@@ -8,6 +8,7 @@ type SavedMovieContextType = {
   addToSavedMovie: (movie: MovieType) => void;
   removFromSavedMovie: (movieId: number) => void;
   isSavedMovie: (movieId:number) => boolean;
+  removeAll: () => void;
 };
 
 const SavedMovieContext = createContext<SavedMovieContextType | null>(null);
@@ -17,13 +18,21 @@ type SavedMoviePropType = {
 };
 
 const SavedMovieContextProvider = ({ children }: SavedMoviePropType) => {
-  const [savedMovies, setSavedMovies] = useState<MovieType[]>(() => {
-    if (typeof window === "undefined") return [];
+  const [savedMovies, setSavedMovies] = useState<MovieType[]>([]);
+  const [isInitialized, setIsInitialized] = useState(false);
 
-    const storedSavedMovies = localStorage.getItem("savedMovies");
-
-    return storedSavedMovies ? JSON.parse(storedSavedMovies) : [];
-  });
+  useEffect(() => {
+    try {
+      const storedSavedMovies = localStorage.getItem("savedMovies");
+      if (storedSavedMovies) {
+        setSavedMovies(JSON.parse(storedSavedMovies));
+      }
+    } catch {
+      setSavedMovies([]);
+    } finally {
+      setIsInitialized(true);
+    }
+  }, []);
 
   const addToSavedMovie = (movie: MovieType) => {
     setSavedMovies((prev) => {
@@ -39,9 +48,16 @@ const SavedMovieContextProvider = ({ children }: SavedMoviePropType) => {
     setSavedMovies((prev) => prev.filter((movie) => movie.id !== movieId));
   };
 
+  const removeAll = () => {
+    localStorage.removeItem("savedMovies");
+    setSavedMovies([]);
+  }
+
   useEffect(() => {
+    if (!isInitialized) return;
+
     localStorage.setItem("savedMovies", JSON.stringify(savedMovies));
-  }, [savedMovies]);
+  }, [savedMovies, isInitialized]);
 
   const isSavedMovie = (movieId: number) => savedMovies.some((movie) => movie.id === movieId);
 
@@ -52,6 +68,7 @@ const SavedMovieContextProvider = ({ children }: SavedMoviePropType) => {
         addToSavedMovie,
         removFromSavedMovie,
         isSavedMovie,
+        removeAll,
       }}
     >
       {children}

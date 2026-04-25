@@ -7,23 +7,32 @@ import {movieTrailer} from "@/source/tmdb";
 export default function Trailer({movieId} : {movieId:string}){
 
     const [trailerUrl, setTrailerUrl] = useState<string | null>(null);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         const fetchTrailer = async () => {
-            const movieTrailerUrl = await movieTrailer(movieId);
-            setTrailerUrl(movieTrailerUrl);
+            try {
+                const movieTrailerUrl = await movieTrailer(movieId);
+                setTrailerUrl(movieTrailerUrl);
+            } finally {
+                setIsLoading(false);
+            }
         }
         fetchTrailer();
     }, [movieId])
 
-    if (!trailerUrl) {
+    if (isLoading) {
         return null;
     }
 
-    const trailerKey = new URL(trailerUrl).searchParams.get("v");
+    const trailerKey = trailerUrl ? new URL(trailerUrl).searchParams.get("v") : null;
 
-    if (!trailerKey) {
-        return null;
+    if (!trailerUrl || !trailerKey) {
+        return (
+            <div className="flex h-full w-full items-center justify-center rounded-xl bg-black/40 p-4 text-center text-sm font-semibold text-white backdrop-blur-sm">
+                Trailer unavailable
+            </div>
+        );
     }
 
     return(
@@ -33,7 +42,6 @@ export default function Trailer({movieId} : {movieId:string}){
             src={`https://www.youtube.com/embed/${trailerKey}`}
             title="Movie Trailer"   
             allowFullScreen>
-
             </iframe>
         </div>
     )
