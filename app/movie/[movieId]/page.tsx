@@ -9,9 +9,12 @@ import { FaArrowRightLong } from "react-icons/fa6";
 import { LiaHeartSolid } from "react-icons/lia";
 import { useEffect, useState } from "react";
 import { useFavoriteMovie } from "@/context/favoriteMovie";
+import { useSavedMovies } from "@/context/savedMoviesContext";
 import { useParams } from "next/navigation";
 
 export default function MovieDetail() {
+  const { addToFavorite, removeFromFavorite, isFavoriteMovie } = useFavoriteMovie();
+  const { addToSavedMovie, removFromSavedMovie, isSavedMovie } = useSavedMovies();
   const params = useParams<{ movieId: string | string[] }>();
   const movieId = Array.isArray(params?.movieId) ? params.movieId[0] : params?.movieId;
   const [movieDetail, setMovieDetail] = useState<Awaited<ReturnType<typeof movieDetails>> | null>(
@@ -86,6 +89,28 @@ export default function MovieDetail() {
       </div>
     );
   }
+
+  const isMovieFavorite = isFavoriteMovie(movieDetail.id);
+  const isMovieSaved = isSavedMovie(movieDetail.id);
+
+  const handleFavoriteToggle = () => {
+    if (isMovieFavorite) {
+      removeFromFavorite(movieDetail.id);
+      return;
+    }
+
+    addToFavorite(movieDetail);
+  };
+
+  const handleSavedToggle = () => {
+    if (isMovieSaved) {
+      removFromSavedMovie(movieDetail.id);
+      return;
+    }
+
+    addToSavedMovie(movieDetail);
+  };
+
   return (
 
     
@@ -114,12 +139,26 @@ export default function MovieDetail() {
             </p>{" "}
           </button>
           <span className="flex gap-4 items-center">
-              <span className="p-3 rounded-full bg-black/55 text-white backdrop-blur-sm transition hover:scale-105 hover:bg-black/75">
+              <button
+                type="button"
+                onClick={handleSavedToggle}
+                aria-label={isMovieSaved ? "Remove from saved movies" : "Add to saved movies"}
+                className={`p-3 rounded-full text-white backdrop-blur-sm transition hover:scale-105 ${
+                  isMovieSaved ? "bg-blue-600/80" : "bg-black/55 hover:bg-black/75"
+                }`}
+              >
                 <FaBookmark />
-              </span>
-              <span className="p-3 rounded-full bg-black/55 text-white backdrop-blur-sm transition hover:scale-105 hover:bg-black/75">
+              </button>
+              <button
+                type="button"
+                onClick={handleFavoriteToggle}
+                aria-label={isMovieFavorite ? "Remove from favorites" : "Add to favorites"}
+                className={`p-3 rounded-full text-white backdrop-blur-sm transition hover:scale-105 ${
+                  isMovieFavorite ? "bg-red-600/80" : "bg-black/55 hover:bg-black/75"
+                }`}
+              >
                 <LiaHeartSolid/>
-              </span>
+              </button>
             </span>
         </span>
         <div className="flex gap-2 flex-wrap flex-col">
