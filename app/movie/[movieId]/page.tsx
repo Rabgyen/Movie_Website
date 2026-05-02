@@ -15,6 +15,7 @@ import Trailer from "@/components/trailer";
 import { IoCloseCircle } from "react-icons/io5";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer, toast } from "react-toastify";
+import Link from "next/link";
 
 export default function MovieDetail() {
   const { addToFavorite, removeFromFavorite, isFavoriteMovie } =
@@ -128,10 +129,7 @@ export default function MovieDetail() {
 
   return (
     <div className="relative dark:border-white h-full w-full flex p-2 sm:p-5 md:p-10 items-center overflow-auto shadow-4xl ">
-      <ToastContainer
-        position="top-center"
-        autoClose={3000}
-      />
+      <ToastContainer position="top-center" autoClose={3000} />
       {toggleTrailer && (
         <div className="absolute top-0 h-full w-full left-0 z-100 p-10 bg-black/80 ">
           <IoCloseCircle
@@ -157,7 +155,7 @@ export default function MovieDetail() {
           <button
             className="flex items-center gap-2 py-3 px-6 bg-[#fa0103] rounded-lg shadow-[0_0_30px_rgba(255,0,0,0.9)] hover:shadow-[0_0_70px_rgba(255,0,0,0.9)] border-none transition-all duration-300"
             onClick={() =>
-              toast.error("Soory! This movie is currently unavailable.")
+              toast.error("Sorry! This movie is currently unavailable.")
             }
           >
             Watch Now <FaPlay />
@@ -213,10 +211,12 @@ export default function MovieDetail() {
               <Cast key={cast.id} cast={cast} />
             ))}
           </div>
-          <div className="group flex items-center gap-2 py-2 px-4 rounded-lg bg-white/10 backdrop-blur-md max-w-40 text-xs">
-            See More Cast{" "}
-            <FaArrowRightLong className="group-hover:translate-x-2 transition-all duration-300" />
-          </div>
+          <Link href={`/casts?movieId=${movieDetail.id}`}>
+            <div className="group flex items-center gap-2 py-2 px-4 rounded-lg bg-white/10 backdrop-blur-md max-w-40 text-xs">
+              See More Cast{" "}
+              <FaArrowRightLong className="group-hover:translate-x-2 transition-all duration-300" />
+            </div>
+          </Link>
         </div>
         <span className="flex flex-col gap-4 drop-shadow-[4px_4px_10px_rgba(0,0,0,0.9)] mt-20 text-xs">
           <span className="flex gap-2">

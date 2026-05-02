@@ -6,7 +6,7 @@ type CastTypeProps = {
 
 export default function Cast({ cast }: CastTypeProps) {
   return (
-    <div className="flex items-center gap-2 py-2 px-4 rounded-lg bg-white/10 backdrop-blur-md">
+    <div className="flex items-center gap-2 py-2 px-4 rounded-lg bg-white/10 backdrop-blur-md shadow-2xl hover:scale-105 transtion-all duration-300">
       <img
         src={
           cast.profile_path
